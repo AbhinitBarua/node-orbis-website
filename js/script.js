@@ -172,4 +172,64 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-}); // End DOMContentLoaded
+const allianceModal = document.getElementById('allianceAnnouncementModal');
+    const closeAllianceModalBtn = document.getElementById('closeAllianceModal');
+    const exploreAllianceBtn = document.getElementById('exploreAllianceBtn'); // If you want this button to do something specific
+
+    // Function to show the modal
+    function showAllianceModal() {
+        if (allianceModal) {
+            allianceModal.style.display = 'flex'; // Show overlay
+            setTimeout(() => { // Timeout to allow display:flex to apply before transition
+                allianceModal.classList.add('visible');
+            }, 50); 
+        }
+    }
+
+    // Function to hide the modal
+    function hideAllianceModal() {
+        if (allianceModal) {
+            allianceModal.classList.remove('visible');
+            // Wait for opacity transition to finish before setting display: none
+            setTimeout(() => {
+                allianceModal.style.display = 'none';
+            }, 500); // Should match CSS transition duration
+        }
+    }
+
+    // Check if modal has been shown this session
+    if (allianceModal && !sessionStorage.getItem('allianceModalShown')) {
+        // Delay showing the modal slightly after page load for better UX
+        setTimeout(showAllianceModal, 1500); // Show after 1.5 seconds
+
+        // Set flag in session storage
+        sessionStorage.setItem('allianceModalShown', 'true');
+    } else if (allianceModal) {
+        allianceModal.style.display = 'none'; // Ensure it's hidden if already shown
+    }
+
+    // Event listener for the close button
+    if (closeAllianceModalBtn) {
+        closeAllianceModalBtn.addEventListener('click', hideAllianceModal);
+    }
+
+    // Event listener for clicking outside the modal content (on the overlay)
+    if (allianceModal) {
+        allianceModal.addEventListener('click', (event) => {
+            if (event.target === allianceModal) { // Check if click is on the overlay itself
+                hideAllianceModal();
+            }
+        });
+    }
+    
+    // Event listener for the "Explore Alliance" button (optional action)
+    if (exploreAllianceBtn) {
+        exploreAllianceBtn.addEventListener('click', () => {
+            hideAllianceModal();
+            // You could redirect to a specific page or scroll to a section here
+            // Example: window.location.href = '/alliance-details.html';
+            alert("Exploring The Node Clantum Alliance! (Placeholder - Add your action here)");
+        });
+    }
+
+});
